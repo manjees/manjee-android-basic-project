@@ -1,0 +1,1 @@
+# manjee-android-basic-project
