@@ -8,6 +8,10 @@
 
 package com.manjee.basic.domain.repository
 
+import com.manjee.basic.domain.model.SubwayStation
+import com.manjee.data_resource.DataResource
+import kotlinx.coroutines.flow.Flow
+
 interface StationRepository {
-    fun getSubwayInfo(stationName: String)
+    fun getSubwayInfo(stationName: String): Flow<DataResource<List<SubwayStation>>>
 }
