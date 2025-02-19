@@ -1,12 +1,9 @@
-import gradle.kotlin.dsl.accessors._fa393d92bf243f86e14930a7cb20dbb9.implementation
-import gradle.kotlin.dsl.accessors._fa393d92bf243f86e14930a7cb20dbb9.kapt
-import gradle.kotlin.dsl.accessors._fa393d92bf243f86e14930a7cb20dbb9.testImplementation
-
 plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("jacoco")
 }
 
 android {

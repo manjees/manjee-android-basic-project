@@ -1,6 +1,7 @@
 plugins {
     id("kotlin")
     id("kotlin-kapt")
+    id("jacoco")
 }
 
 val libs: VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
