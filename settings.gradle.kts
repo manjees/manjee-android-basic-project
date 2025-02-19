@@ -1,5 +1,6 @@
 rootProject.name = "ManjeeBasicApp"
 include(":app")
+include(":domain")
 
 pluginManagement {
     repositories {
