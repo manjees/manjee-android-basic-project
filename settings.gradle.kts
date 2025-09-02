@@ -1,9 +1,3 @@
-rootProject.name = "ManjeeBasicApp"
-include(":app")
-include(":data")
-include(":data-resource")
-include(":domain")
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -13,3 +7,10 @@ pluginManagement {
     }
 }
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+rootProject.name = "ManjeeBasicApp"
+include(
+    ":app",
+    ":data",
+    ":domain"
+)

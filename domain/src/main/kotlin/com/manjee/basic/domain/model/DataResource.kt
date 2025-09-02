@@ -1,4 +1,4 @@
-package com.manjee.data_resource
+package com.manjee.basic.domain.model
 
 sealed class DataResource<out T> {
     class Success<T>(val data: T) : DataResource<T>()
