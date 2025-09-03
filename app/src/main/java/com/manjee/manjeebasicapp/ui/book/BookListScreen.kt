@@ -14,76 +14,83 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 
+import androidx.compose.material3.Scaffold
+
 @Composable
 fun BookListScreen(viewModel: BookViewModel = hiltViewModel()) {
     val searchQuery by viewModel.searchQuery.collectAsState()
     val lazyPagingItems = viewModel.bookPagingFlow.collectAsLazyPagingItems()
     var text by remember { mutableStateOf(searchQuery) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+    Scaffold { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
         ) {
-            OutlinedTextField(
-                value = text,
-                onValueChange = { text = it },
-                modifier = Modifier.weight(1f),
-                label = { Text("Search Books") },
-                singleLine = true
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Button(onClick = { viewModel.setSearchQuery(text) }) {
-                Text("Search")
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        when (lazyPagingItems.loadState.refresh) {
-            is LoadState.Loading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = text,
+                    onValueChange = { text = it },
+                    modifier = Modifier.weight(1f),
+                    label = { Text("Search Books") },
+                    singleLine = true
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(onClick = { viewModel.setSearchQuery(text) }) {
+                    Text("Search")
                 }
             }
-            is LoadState.Error -> {
-                val error = (lazyPagingItems.loadState.refresh as LoadState.Error).error
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "Error: ${error.message}")
-                        Button(onClick = { lazyPagingItems.retry() }) {
-                            Text("Retry")
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            when (lazyPagingItems.loadState.refresh) {
+                is LoadState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                is LoadState.Error -> {
+                    val error = (lazyPagingItems.loadState.refresh as LoadState.Error).error
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(text = "Error: ${error.message}")
+                            Button(onClick = { lazyPagingItems.retry() }) {
+                                Text("Retry")
+                            }
                         }
                     }
                 }
-            }
-            else -> {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(
-                        count = lazyPagingItems.itemCount,
-                        // Book 에 id 가 있으면 키/콘텐츠 타입 힌트도 추가 (선택)
-                        // key = lazyPagingItems.itemKey { it.id },
-                        // contentType = lazyPagingItems.itemContentType()
-                    ) { index ->
-                        val book = lazyPagingItems[index]
-                        if (book != null) {
-                            BookItem(book = book)
-                        }
-                    }
 
-                    if (lazyPagingItems.loadState.append is LoadState.Loading) {
-                        item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator()
+                else -> {
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        items(
+                            count = lazyPagingItems.itemCount,
+                            // Book 에 id 가 있으면 키/콘텐츠 타입 힌트도 추가 (선택)
+                            // key = lazyPagingItems.itemKey { it.id },
+                            // contentType = lazyPagingItems.itemContentType()
+                        ) { index ->
+                            val book = lazyPagingItems[index]
+                            if (book != null) {
+                                BookItem(book = book)
+                            }
+                        }
+
+                        if (lazyPagingItems.loadState.append is LoadState.Loading) {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator()
+                                }
                             }
                         }
                     }
