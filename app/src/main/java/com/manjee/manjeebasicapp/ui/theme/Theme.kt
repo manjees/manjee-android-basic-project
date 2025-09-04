@@ -17,9 +17,12 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    background = BackgroundDark,
+    onBackground = OnBackgroundDark,
+    surface = SurfaceDark,
+    onSurface = OnSurfaceDark,
+    onSurfaceVariant = OnSurfaceVariantDark,
+    primary = OnBackgroundDark, // For text in textfield
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -40,7 +43,7 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun ManjeeBasicAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = true, // Force dark theme
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit

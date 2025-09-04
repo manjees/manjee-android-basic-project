@@ -16,35 +16,54 @@ import androidx.paging.compose.collectAsLazyPagingItems
 
 import androidx.compose.material3.Scaffold
 
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
+
 @Composable
 fun BookListScreen(viewModel: BookViewModel = hiltViewModel()) {
     val searchQuery by viewModel.searchQuery.collectAsState()
     val lazyPagingItems = viewModel.bookPagingFlow.collectAsLazyPagingItems()
     var text by remember { mutableStateOf(searchQuery) }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    Scaffold { innerPadding ->
+    Scaffold {
+ innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedTextField(
-                    value = text,
-                    onValueChange = { text = it },
-                    modifier = Modifier.weight(1f),
-                    label = { Text("Search Books") },
-                    singleLine = true
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Button(onClick = { viewModel.setSearchQuery(text) }) {
-                    Text("Search")
-                }
-            }
+            TextField(
+                value = text,
+                onValueChange = { text = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                placeholder = { Text("Search books by title, author, ISBN") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search Icon") },
+                singleLine = true,
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = com.manjee.manjeebasicapp.ui.theme.SurfaceDark,
+                    unfocusedContainerColor = com.manjee.manjeebasicapp.ui.theme.SurfaceDark,
+                    disabledContainerColor = com.manjee.manjeebasicapp.ui.theme.SurfaceDark,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                ),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                keyboardActions = KeyboardActions(onSearch = {
+                    viewModel.setSearchQuery(text)
+                    keyboardController?.hide()
+                })
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -68,7 +87,10 @@ fun BookListScreen(viewModel: BookViewModel = hiltViewModel()) {
                 }
 
                 else -> {
-                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(horizontal = 16.dp)
+                    ) {
                         items(
                             count = lazyPagingItems.itemCount,
                             // Book 에 id 가 있으면 키/콘텐츠 타입 힌트도 추가 (선택)
