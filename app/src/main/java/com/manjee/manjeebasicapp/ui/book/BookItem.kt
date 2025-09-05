@@ -31,13 +31,17 @@ import com.manjee.manjeebasicapp.ui.theme.HeartIconBgDark
 import com.manjee.manjeebasicapp.ui.theme.HeartIconLiked
 import com.manjee.manjeebasicapp.ui.theme.RatingChipDark
 
+import androidx.compose.foundation.clickable
+
 @Composable
-fun BookItem(book: Book, modifier: Modifier = Modifier) {
+fun BookItem(book: Book, modifier: Modifier = Modifier, onClick: () -> Unit) {
     var isLiked by remember { mutableStateOf(false) }
 
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .clickable { onClick() }
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

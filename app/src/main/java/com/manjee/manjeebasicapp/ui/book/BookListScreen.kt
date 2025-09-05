@@ -26,9 +26,10 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.navigation.NavController
 
 @Composable
-fun BookListScreen(viewModel: BookViewModel = hiltViewModel()) {
+fun BookListScreen(navController: NavController, viewModel: BookViewModel = hiltViewModel()) {
     val searchQuery by viewModel.searchQuery.collectAsState()
     val lazyPagingItems = viewModel.bookPagingFlow.collectAsLazyPagingItems()
     var text by remember { mutableStateOf(searchQuery) }
@@ -99,7 +100,9 @@ fun BookListScreen(viewModel: BookViewModel = hiltViewModel()) {
                         ) { index ->
                             val book = lazyPagingItems[index]
                             if (book != null) {
-                                BookItem(book = book)
+                                BookItem(book = book, onClick = {
+                                    navController.navigate(com.manjee.manjeebasicapp.ui.navigation.Routes.getBookDetailPath(book.id))
+                                })
                             }
                         }
 

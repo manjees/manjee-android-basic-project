@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface BookRepository {
     fun getBookStream(query: String): Flow<PagingData<Book>>
+    suspend fun getBook(id: String): Book?
 }

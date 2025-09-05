@@ -16,6 +16,9 @@ interface BookDao {
     @Query("SELECT * FROM books")
     fun getBooks(): PagingSource<Int, BookEntity>
 
+    @Query("SELECT * FROM books WHERE id = :id")
+    suspend fun getBookById(id: String): BookEntity?
+
     @Query("DELETE FROM books")
     suspend fun clearBooks()
 }

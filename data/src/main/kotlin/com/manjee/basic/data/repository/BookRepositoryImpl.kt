@@ -36,4 +36,8 @@ class BookRepositoryImpl @Inject constructor(
             pagingData.map { it.toDomainModel() }
         }
     }
+
+    override suspend fun getBook(id: String): Book? {
+        return database.bookDao().getBookById(id)?.toDomainModel()
+    }
 }
