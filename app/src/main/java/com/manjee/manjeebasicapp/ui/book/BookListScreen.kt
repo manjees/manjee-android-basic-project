@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 fun BookListScreen(navController: NavController, viewModel: BookViewModel = hiltViewModel()) {
     val searchQuery by viewModel.searchQuery.collectAsState()
     val lazyPagingItems = viewModel.bookPagingFlow.collectAsLazyPagingItems()
+    val likedBookIds by viewModel.likedBookIds.collectAsState()
     var text by remember { mutableStateOf(searchQuery) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -100,9 +101,15 @@ fun BookListScreen(navController: NavController, viewModel: BookViewModel = hilt
                         ) { index ->
                             val book = lazyPagingItems[index]
                             if (book != null) {
-                                BookItem(book = book, onClick = {
-                                    navController.navigate(com.manjee.manjeebasicapp.ui.navigation.Routes.getBookDetailPath(book.id))
-                                })
+                                val isLiked = likedBookIds.contains(book.id)
+                                BookItem(
+                                    book = book,
+                                    isLiked = isLiked,
+                                    onToggleLike = { viewModel.toggleBookLike(book) },
+                                    onClick = {
+                                        navController.navigate(com.manjee.manjeebasicapp.ui.navigation.Routes.getBookDetailPath(book.id))
+                                    }
+                                )
                             }
                         }
 

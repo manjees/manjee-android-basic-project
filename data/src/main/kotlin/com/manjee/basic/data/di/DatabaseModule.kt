@@ -2,7 +2,9 @@ package com.manjee.basic.data.di
 
 import android.content.Context
 import androidx.room.Room
+import com.manjee.basic.data.local.dao.FavoriteBookDao
 import com.manjee.basic.data.local.database.AppDatabase
+import com.manjee.basic.data.local.database.AppDatabaseMigrations
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +25,8 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "book_database"
-        ).build()
+        ).addMigrations(AppDatabaseMigrations.MIGRATION_1_2)
+            .build()
     }
 
     @Provides
@@ -31,4 +34,7 @@ object DatabaseModule {
 
     @Provides
     fun provideRemoteKeyDao(database: AppDatabase) = database.remoteKeyDao()
+
+    @Provides
+    fun provideFavoriteBookDao(database: AppDatabase): FavoriteBookDao = database.favoriteBookDao()
 }

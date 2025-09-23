@@ -5,17 +5,24 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.manjee.basic.domain.model.Book
+import com.manjee.basic.domain.usecase.ObserveLikedBookIdsUseCase
 import com.manjee.basic.domain.usecase.SearchBooksUseCase
+import com.manjee.basic.domain.usecase.ToggleLikedBookUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BookViewModel @Inject constructor(
-    private val searchBooksUseCase: SearchBooksUseCase
+    private val searchBooksUseCase: SearchBooksUseCase,
+    observeLikedBookIdsUseCase: ObserveLikedBookIdsUseCase,
+    private val toggleLikedBookUseCase: ToggleLikedBookUseCase
 ) : ViewModel() {
 
     private val _searchQuery = MutableStateFlow("Android")
@@ -27,7 +34,16 @@ class BookViewModel @Inject constructor(
         }
         .cachedIn(viewModelScope)
 
+    val likedBookIds = observeLikedBookIdsUseCase()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptySet())
+
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
+    }
+
+    fun toggleBookLike(book: Book) {
+        viewModelScope.launch {
+            toggleLikedBookUseCase(book)
+        }
     }
 }

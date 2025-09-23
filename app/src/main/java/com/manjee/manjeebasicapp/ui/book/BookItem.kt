@@ -13,7 +13,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,9 +34,13 @@ import com.manjee.manjeebasicapp.ui.theme.RatingChipDark
 import androidx.compose.foundation.clickable
 
 @Composable
-fun BookItem(book: Book, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    var isLiked by remember { mutableStateOf(false) }
-
+fun BookItem(
+    book: Book,
+    isLiked: Boolean,
+    modifier: Modifier = Modifier,
+    onToggleLike: () -> Unit,
+    onClick: () -> Unit
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -83,7 +87,7 @@ fun BookItem(book: Book, modifier: Modifier = Modifier, onClick: () -> Unit) {
         Spacer(modifier = Modifier.width(16.dp))
 
         IconButton(
-            onClick = { isLiked = !isLiked },
+            onClick = onToggleLike,
             modifier = Modifier.background(HeartIconBgDark, CircleShape)
         ) {
             Icon(

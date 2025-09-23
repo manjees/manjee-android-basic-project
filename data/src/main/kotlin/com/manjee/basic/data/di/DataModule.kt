@@ -1,7 +1,9 @@
 package com.manjee.basic.data.di
 
 import com.manjee.basic.data.repository.BookRepositoryImpl
+import com.manjee.basic.data.repository.LikedBooksRepositoryImpl
 import com.manjee.basic.domain.repository.BookRepository
+import com.manjee.basic.domain.repository.LikedBooksRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,4 +17,8 @@ abstract class DataModule {
     @Binds
     @Singleton
     abstract fun bindBookRepository(bookRepositoryImpl: BookRepositoryImpl): BookRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindLikedBooksRepository(likedBooksRepositoryImpl: LikedBooksRepositoryImpl): LikedBooksRepository
 }
