@@ -35,7 +35,7 @@ class BookViewModel @Inject constructor(
         .cachedIn(viewModelScope)
 
     val likedBookIds = observeLikedBookIdsUseCase()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptySet())
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptySet())
 
     fun setSearchQuery(query: String) {
         _searchQuery.value = query

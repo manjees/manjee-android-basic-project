@@ -12,6 +12,7 @@ android {
     defaultConfig {
         minSdk = 24
         targetSdk = 35
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -49,4 +50,14 @@ dependencies {
     // Paging
     implementation(libs.paging.runtime)
     implementation(libs.paging.runtime.ktx)
+    
+    testImplementation(libs.junit)
+    testImplementation(libs.coroutine.test)
+
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.coroutine.test)
+    androidTestImplementation(libs.androidx.room.testing)
 }
