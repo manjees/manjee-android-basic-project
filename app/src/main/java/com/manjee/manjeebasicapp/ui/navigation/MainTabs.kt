@@ -46,24 +46,6 @@ fun DiscoverScreen() {
 }
 
 @Composable
-fun LibraryScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Library",
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Text(
-            text = "Your saved books will appear here",
-            style = MaterialTheme.typography.bodyMedium
-        )
-    }
-}
-
-@Composable
 fun ProfileScreen() {
     Column(
         modifier = Modifier.fillMaxSize(),

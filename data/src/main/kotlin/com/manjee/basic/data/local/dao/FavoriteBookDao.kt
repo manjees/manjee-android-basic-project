@@ -21,4 +21,7 @@ interface FavoriteBookDao {
 
     @Query("SELECT id FROM favorite_books")
     fun observeFavoriteIds(): Flow<List<String>>
+
+    @Query("SELECT * FROM favorite_books ORDER BY likedAt DESC")
+    fun observeFavoriteBooks(): Flow<List<FavoriteBookEntity>>
 }

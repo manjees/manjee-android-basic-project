@@ -39,7 +39,7 @@ class FavoriteBookDaoTest {
     @Test
     fun upsertAndDeleteFavorite() = runBlocking {
         val book = sampleBook()
-        favoriteBookDao.upsert(FavoriteBookEntity.from(book))
+        favoriteBookDao.upsert(FavoriteBookEntity.from(book, likedAt = 1L))
 
         assertTrue(favoriteBookDao.isFavorite(book.id))
         assertTrue(favoriteBookDao.observeFavoriteIds().first().contains(book.id))
@@ -52,12 +52,24 @@ class FavoriteBookDaoTest {
     @Test
     fun upsertReplacesExistingRecord() = runBlocking {
         val book = sampleBook()
-        favoriteBookDao.upsert(FavoriteBookEntity.from(book))
+        favoriteBookDao.upsert(FavoriteBookEntity.from(book, likedAt = 1L))
         val updated = book.copy(title = "New Title")
-        favoriteBookDao.upsert(FavoriteBookEntity.from(updated))
+        favoriteBookDao.upsert(FavoriteBookEntity.from(updated, likedAt = 2L))
 
         val ids = favoriteBookDao.observeFavoriteIds().first()
         assertEquals(setOf(book.id), ids.toSet())
+    }
+
+    @Test
+    fun observeFavoriteBooks_emitsInLikedAtOrder() = runBlocking {
+        val first = sampleBook().copy(id = "fav-1", title = "A")
+        val second = sampleBook().copy(id = "fav-2", title = "B")
+
+        favoriteBookDao.upsert(FavoriteBookEntity.from(first, likedAt = 10L))
+        favoriteBookDao.upsert(FavoriteBookEntity.from(second, likedAt = 20L))
+
+        val favorites = favoriteBookDao.observeFavoriteBooks().first()
+        assertEquals(listOf("fav-2", "fav-1"), favorites.map { it.id })
     }
 
     private fun sampleBook(): Book = Book(

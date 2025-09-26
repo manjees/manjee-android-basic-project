@@ -12,7 +12,7 @@ import com.manjee.basic.data.local.entity.RemoteKeyEntity
 
 @Database(
     entities = [BookEntity::class, RemoteKeyEntity::class, FavoriteBookEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(AppTypeConverters::class)

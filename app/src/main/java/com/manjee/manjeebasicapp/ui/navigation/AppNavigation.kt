@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.manjee.manjeebasicapp.ui.book.BookDetailScreen
 import com.manjee.manjeebasicapp.ui.book.BookListScreen
+import com.manjee.manjeebasicapp.ui.library.LibraryScreen
 
 object Routes {
     const val HOME = "home"
@@ -51,7 +52,7 @@ fun AppNavigation() {
     val bottomNavItems = listOf(
         BottomNavItem(route = Routes.HOME, label = "Home", icon = Icons.Filled.Home),
         BottomNavItem(route = Routes.DISCOVER, label = "Discover", icon = Icons.Filled.Person),
-        BottomNavItem(route = Routes.LIBRARY, label = "Library", icon = Icons.Filled.Person),
+        BottomNavItem(route = Routes.LIBRARY, label = "Favorites", icon = Icons.Filled.Person),
         BottomNavItem(route = Routes.PROFILE, label = "Profile", icon = Icons.Filled.Person)
     )
 
@@ -118,7 +119,7 @@ fun AppNavigation() {
                 DiscoverScreen()
             }
             composable(Routes.LIBRARY) {
-                LibraryScreen()
+                LibraryScreen(navController = navController)
             }
             composable(Routes.PROFILE) {
                 ProfileScreen()

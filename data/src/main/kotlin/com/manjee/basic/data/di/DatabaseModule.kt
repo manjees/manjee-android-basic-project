@@ -25,7 +25,10 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "book_database"
-        ).addMigrations(AppDatabaseMigrations.MIGRATION_1_2)
+        ).addMigrations(
+            AppDatabaseMigrations.MIGRATION_1_2,
+            AppDatabaseMigrations.MIGRATION_2_3
+        )
             .build()
     }
 

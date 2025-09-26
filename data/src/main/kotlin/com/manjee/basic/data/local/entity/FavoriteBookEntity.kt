@@ -16,7 +16,8 @@ data class FavoriteBookEntity(
     val averageRating: Double?,
     val ratingsCount: Int?,
     val thumbnail: String?,
-    val infoLink: String?
+    val infoLink: String?,
+    val likedAt: Long
 ) {
     fun toDomainModel(): Book = Book(
         id = id,
@@ -33,7 +34,7 @@ data class FavoriteBookEntity(
     )
 
     companion object {
-        fun from(book: Book): FavoriteBookEntity = FavoriteBookEntity(
+        fun from(book: Book, likedAt: Long): FavoriteBookEntity = FavoriteBookEntity(
             id = book.id,
             title = book.title,
             authors = book.authors,
@@ -44,7 +45,8 @@ data class FavoriteBookEntity(
             averageRating = book.averageRating,
             ratingsCount = book.ratingsCount,
             thumbnail = book.thumbnail,
-            infoLink = book.infoLink
+            infoLink = book.infoLink,
+            likedAt = likedAt
         )
     }
 }

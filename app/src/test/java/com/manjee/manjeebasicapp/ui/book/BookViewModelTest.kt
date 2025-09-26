@@ -3,6 +3,7 @@ package com.manjee.manjeebasicapp.ui.book
 import androidx.paging.PagingData
 import com.manjee.basic.domain.model.Book
 import com.manjee.basic.domain.repository.BookRepository
+import com.manjee.basic.domain.model.FavoriteBook
 import com.manjee.basic.domain.repository.LikedBooksRepository
 import com.manjee.basic.domain.usecase.ObserveLikedBookIdsUseCase
 import com.manjee.basic.domain.usecase.SearchBooksUseCase
@@ -12,6 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -86,16 +88,26 @@ class BookViewModelTest {
     }
 
     private class FakeLikedBooksRepository : LikedBooksRepository {
-        private val liked = MutableStateFlow<Set<String>>(emptySet())
+        private val favorites = MutableStateFlow<List<FavoriteBook>>(emptyList())
+        private var counter = 0L
 
-        override fun observeLikedBookIds(): Flow<Set<String>> = liked
+        override fun observeLikedBookIds(): Flow<Set<String>> = favorites.map { list ->
+            list.map { it.book.id }.toSet()
+        }
+
+        override fun observeFavorites(): Flow<List<FavoriteBook>> = favorites
 
         override suspend fun toggle(book: Book) {
-            liked.value = if (liked.value.contains(book.id)) {
-                liked.value - book.id
+            if (favorites.value.any { it.book.id == book.id }) {
+                remove(book.id)
             } else {
-                liked.value + book.id
+                counter += 1
+                favorites.value = favorites.value + FavoriteBook(book, counter)
             }
+        }
+
+        override suspend fun remove(bookId: String) {
+            favorites.value = favorites.value.filterNot { it.book.id == bookId }
         }
     }
 }
