@@ -135,9 +135,10 @@ private fun SortChips(
                     containerColor = if (selected == sort) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
                     labelColor = if (selected == sort) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
                 ),
-                border = (if (selected == sort) null else AssistChipDefaults.assistChipBorder(
-                    borderColor = MaterialTheme.colorScheme.outline
-                )) as BorderStroke?
+                border = if (selected == sort) null else BorderStroke(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outline
+                )
             )
         }
     }

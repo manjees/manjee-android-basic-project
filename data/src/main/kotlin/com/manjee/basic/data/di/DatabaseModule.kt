@@ -28,7 +28,7 @@ object DatabaseModule {
         ).addMigrations(
             AppDatabaseMigrations.MIGRATION_1_2,
             AppDatabaseMigrations.MIGRATION_2_3
-        )
+        ).fallbackToDestructiveMigrationOnDowngrade()
             .build()
     }
 
