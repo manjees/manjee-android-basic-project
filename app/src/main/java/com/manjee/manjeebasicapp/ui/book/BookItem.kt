@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -73,13 +74,18 @@ fun BookItem(
                 color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "by ${book.authors.joinToString(", ")}",
-                style = MaterialTheme.typography.bodyMedium,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            if (book.authors.isNotEmpty()) {
+                Text(
+                    text = stringResource(
+                        id = com.manjee.manjeebasicapp.R.string.book_author_by,
+                        book.authors.joinToString(", ")
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
             Spacer(modifier = Modifier.height(12.dp))
             RatingChip(rating = 4.5) // API에 없으므로 임시 데이터
         }
@@ -92,7 +98,7 @@ fun BookItem(
         ) {
             Icon(
                 imageVector = if (isLiked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                contentDescription = "Like",
+                contentDescription = stringResource(id = com.manjee.manjeebasicapp.R.string.cd_toggle_favorite),
                 tint = if (isLiked) HeartIconLiked else Color.White
             )
         }
@@ -112,7 +118,7 @@ fun RatingChip(rating: Double, modifier: Modifier = Modifier) {
         ) {
             Icon(
                 imageVector = Icons.Default.Star,
-                contentDescription = "Rating Star",
+                contentDescription = null,
                 tint = Color.Yellow,
                 modifier = Modifier.size(16.dp)
             )

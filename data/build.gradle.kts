@@ -1,8 +1,11 @@
+import com.google.protobuf.gradle.GenerateProtoTask
+
 plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.protobuf")
 }
 
 android {
@@ -35,6 +38,10 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
+    // DataStore
+    implementation(libs.androidx.datastore.proto)
+    implementation(libs.protobuf.javalite)
+
     // Network
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
@@ -60,4 +67,19 @@ dependencies {
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.coroutine.test)
     androidTestImplementation(libs.androidx.room.testing)
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.25.3"
+    }
+    generateProtoTasks {
+        all().configureEach {
+            builtins {
+                register("java") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }

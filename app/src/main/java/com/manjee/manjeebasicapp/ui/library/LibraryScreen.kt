@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -42,6 +43,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.manjee.basic.domain.model.FavoriteBook
+import com.manjee.manjeebasicapp.R
 import com.manjee.manjeebasicapp.ui.navigation.Routes
 
 @Composable
@@ -58,20 +60,20 @@ fun LibraryScreen(
     ) {
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = "즐겨찾기 (Favorites)",
+            text = stringResource(id = R.string.library_header_title),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "저장한 책을 빠르게 확인하세요",
+            text = stringResource(id = R.string.library_header_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "정렬",
+            text = stringResource(id = R.string.library_sort_label),
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -124,7 +126,7 @@ private fun SortChips(
         FavoriteSort.values().forEach { sort ->
             AssistChip(
                 onClick = { onSortSelected(sort) },
-                label = { Text(sort.label) },
+                label = { Text(text = stringResource(id = sort.labelRes)) },
                 leadingIcon = {
                     when (sort) {
                         FavoriteSort.RECENT -> Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
@@ -188,16 +190,21 @@ private fun FavoriteBookCard(
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = favorite.book.authors.joinToString(", "),
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                if (favorite.book.authors.isNotEmpty()) {
+                    Text(
+                        text = stringResource(
+                            id = R.string.book_author_by,
+                            favorite.book.authors.joinToString(", ")
+                        ),
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = favorite.book.description ?: "요약 정보가 제공되지 않습니다",
+                    text = favorite.book.description ?: stringResource(id = R.string.library_no_description),
                     style = MaterialTheme.typography.bodySmall,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
@@ -209,7 +216,7 @@ private fun FavoriteBookCard(
                 IconButton(onClick = onRemove) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Remove favorite",
+                        contentDescription = stringResource(id = R.string.cd_remove_favorite),
                         tint = MaterialTheme.colorScheme.error
                     )
                 }
@@ -234,13 +241,13 @@ private fun EmptyFavorites(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "아직 즐겨찾기가 없습니다",
+            text = stringResource(id = R.string.library_empty_title),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "마음에 드는 책에 하트를 눌러 저장해보세요",
+            text = stringResource(id = R.string.library_empty_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

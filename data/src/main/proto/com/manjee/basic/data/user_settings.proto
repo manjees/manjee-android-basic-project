@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_package = "com.manjee.basic.data.proto";
+option java_multiple_files = true;
+
+message UserSettingsProto {
+  ThemeMode theme_mode = 1;
+  string language_tag = 2;
+
+  enum ThemeMode {
+    THEME_MODE_UNSPECIFIED = 0;
+    THEME_MODE_LIGHT = 1;
+    THEME_MODE_DARK = 2;
+  }
+}

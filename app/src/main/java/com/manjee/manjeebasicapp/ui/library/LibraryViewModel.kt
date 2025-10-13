@@ -2,6 +2,7 @@ package com.manjee.manjeebasicapp.ui.library
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.annotation.StringRes
 import com.manjee.basic.domain.model.FavoriteBook
 import com.manjee.basic.domain.usecase.ObserveFavoriteBooksUseCase
 import com.manjee.basic.domain.usecase.RemoveFavoriteBookUseCase
@@ -53,7 +54,7 @@ data class LibraryUiState(
     val sort: FavoriteSort = FavoriteSort.RECENT
 )
 
-enum class FavoriteSort(val label: String) {
-    RECENT("최신순"),
-    TITLE("가나다순")
+enum class FavoriteSort(@StringRes val labelRes: Int) {
+    RECENT(com.manjee.manjeebasicapp.R.string.library_sort_chip_recent),
+    TITLE(com.manjee.manjeebasicapp.R.string.library_sort_chip_title)
 }

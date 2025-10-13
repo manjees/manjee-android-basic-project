@@ -7,6 +7,7 @@ buildscript {
     }
     dependencies {
         classpath(libs.kotlin)
+        classpath(libs.protobuf.gradle)
     }
 }
 

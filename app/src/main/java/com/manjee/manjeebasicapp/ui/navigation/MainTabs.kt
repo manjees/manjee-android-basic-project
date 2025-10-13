@@ -8,6 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.manjee.manjeebasicapp.R
 
 @Composable
 fun HomeScreen() {
@@ -17,11 +19,11 @@ fun HomeScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Welcome to Manjee",
+            text = stringResource(id = R.string.home_welcome_title),
             style = MaterialTheme.typography.headlineMedium
         )
         Text(
-            text = "Use the search icon to browse books",
+            text = stringResource(id = R.string.home_welcome_subtitle),
             style = MaterialTheme.typography.bodyMedium
         )
     }
@@ -35,29 +37,11 @@ fun DiscoverScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Discover",
+            text = stringResource(id = R.string.discover_title),
             style = MaterialTheme.typography.headlineMedium
         )
         Text(
-            text = "Coming soon",
-            style = MaterialTheme.typography.bodyMedium
-        )
-    }
-}
-
-@Composable
-fun ProfileScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Profile",
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Text(
-            text = "Configure your account settings",
+            text = stringResource(id = R.string.discover_subtitle),
             style = MaterialTheme.typography.bodyMedium
         )
     }

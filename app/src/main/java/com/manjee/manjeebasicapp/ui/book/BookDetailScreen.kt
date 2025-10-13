@@ -7,8 +7,20 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,6 +28,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,6 +37,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
 import kotlin.math.abs
+import com.manjee.manjeebasicapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,14 +52,19 @@ fun BookDetailScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = book?.title ?: "Loading...") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                TopAppBar(
+                    title = {
+                        Text(text = book?.title ?: stringResource(id = R.string.book_loading))
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(id = R.string.cd_navigate_back)
+                            )
+                        }
                     }
-                }
-            )
+                )
         }
     ) { innerPadding ->
         book?.let {
@@ -96,10 +115,15 @@ fun BookDetailScreen(
                     style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "by ${it.authors.joinToString(", ")}",
-                    style = MaterialTheme.typography.titleMedium
-                )
+                if (it.authors.isNotEmpty()) {
+                    Text(
+                        text = stringResource(
+                            id = R.string.book_author_by,
+                            it.authors.joinToString(", ")
+                        ),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
             }
         } ?: run {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

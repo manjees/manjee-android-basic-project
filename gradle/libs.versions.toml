@@ -11,6 +11,8 @@ composeNavigation = "2.7.7"
 gson = "2.10.1"
 glide = "4.16.0"
 androidxDatastore = "1.1.2"
+protobuf = "3.25.3"
+protobufPlugin = "0.9.4"
 coil = "2.6.0"
 
 # Paging
@@ -63,7 +65,10 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
-androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDatastore" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDatastore" }
+androidx-datastore-proto = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDatastore" }
+protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobuf" }
+protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobufPlugin" }
 bumptech-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide"}
 bumptech-glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 

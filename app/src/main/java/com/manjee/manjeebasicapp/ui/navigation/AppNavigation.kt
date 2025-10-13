@@ -1,10 +1,12 @@
 package com.manjee.manjeebasicapp.ui.navigation
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -16,6 +18,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -24,15 +28,20 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.manjee.basic.domain.model.AppLanguage
+import com.manjee.basic.domain.model.ThemeMode
+import com.manjee.manjeebasicapp.R
 import com.manjee.manjeebasicapp.ui.book.BookDetailScreen
 import com.manjee.manjeebasicapp.ui.book.BookListScreen
 import com.manjee.manjeebasicapp.ui.library.LibraryScreen
+import com.manjee.manjeebasicapp.ui.settings.SettingsScreen
+import com.manjee.manjeebasicapp.ui.settings.SettingsUiState
 
 object Routes {
     const val HOME = "home"
     const val DISCOVER = "discover"
     const val LIBRARY = "library"
-    const val PROFILE = "profile"
+    const val SETTINGS = "profile"
     const val BOOK_LIST = "book_list"
     const val BOOK_DETAIL = "book_detail/{bookId}"
 
@@ -41,19 +50,23 @@ object Routes {
 
 private data class BottomNavItem(
     val route: String,
-    val label: String,
-    val icon: androidx.compose.ui.graphics.vector.ImageVector
+    @StringRes val labelRes: Int,
+    val icon: ImageVector
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppNavigation() {
+fun AppNavigation(
+    settingsUiState: SettingsUiState,
+    onThemeModeChange: (ThemeMode) -> Unit,
+    onLanguageChange: (AppLanguage) -> Unit
+) {
     val navController = rememberNavController()
     val bottomNavItems = listOf(
-        BottomNavItem(route = Routes.HOME, label = "Home", icon = Icons.Filled.Home),
-        BottomNavItem(route = Routes.DISCOVER, label = "Discover", icon = Icons.Filled.Person),
-        BottomNavItem(route = Routes.LIBRARY, label = "Favorites", icon = Icons.Filled.Person),
-        BottomNavItem(route = Routes.PROFILE, label = "Profile", icon = Icons.Filled.Person)
+        BottomNavItem(route = Routes.HOME, labelRes = R.string.nav_home, icon = Icons.Filled.Home),
+        BottomNavItem(route = Routes.DISCOVER, labelRes = R.string.nav_discover, icon = Icons.Filled.Search),
+        BottomNavItem(route = Routes.LIBRARY, labelRes = R.string.nav_library, icon = Icons.Filled.Favorite),
+        BottomNavItem(route = Routes.SETTINGS, labelRes = R.string.nav_settings, icon = Icons.Filled.Settings)
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -67,14 +80,17 @@ fun AppNavigation() {
         topBar = {
             if (currentRoute == Routes.HOME) {
                 TopAppBar(
-                    title = { Text("Home") },
+                    title = { Text(stringResource(id = R.string.home_top_app_bar_title)) },
                     actions = {
                         IconButton(onClick = {
                             navController.navigate(Routes.BOOK_LIST) {
                                 launchSingleTop = true
                             }
                         }) {
-                            Icon(imageVector = Icons.Filled.Search, contentDescription = "Search books")
+                            Icon(
+                                imageVector = Icons.Filled.Search,
+                                contentDescription = stringResource(id = R.string.cd_search_books)
+                            )
                         }
                     }
                 )
@@ -99,8 +115,13 @@ fun AppNavigation() {
                                     restoreState = true
                                 }
                             },
-                            icon = { Icon(imageVector = item.icon, contentDescription = item.label) },
-                            label = { Text(item.label) }
+                            icon = {
+                                Icon(
+                                    imageVector = item.icon,
+                                    contentDescription = stringResource(id = item.labelRes)
+                                )
+                            },
+                            label = { Text(text = stringResource(id = item.labelRes)) }
                         )
                     }
                 }
@@ -121,8 +142,12 @@ fun AppNavigation() {
             composable(Routes.LIBRARY) {
                 LibraryScreen(navController = navController)
             }
-            composable(Routes.PROFILE) {
-                ProfileScreen()
+            composable(Routes.SETTINGS) {
+                SettingsScreen(
+                    uiState = settingsUiState,
+                    onThemeModeChange = onThemeModeChange,
+                    onLanguageChange = onLanguageChange
+                )
             }
             composable(Routes.BOOK_LIST) {
                 BookListScreen(navController = navController)
