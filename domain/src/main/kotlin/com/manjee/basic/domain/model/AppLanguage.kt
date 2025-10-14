@@ -6,6 +6,8 @@ enum class AppLanguage(val languageTag: String) {
     ENGLISH("en"),
     KOREAN("ko");
 
+    fun toLocale(): Locale = Locale.forLanguageTag(languageTag)
+
     companion object {
         fun fromTag(tag: String?): AppLanguage {
             if (tag.isNullOrBlank()) return fromTag(Locale.getDefault().toLanguageTag())
