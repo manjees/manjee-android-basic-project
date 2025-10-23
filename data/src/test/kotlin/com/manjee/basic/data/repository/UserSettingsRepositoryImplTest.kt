@@ -13,14 +13,15 @@ import kotlin.io.path.deleteIfExists
 import kotlin.io.path.exists
 import kotlin.io.path.isDirectory
 import kotlin.io.path.listDirectoryEntries
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Test
 
 class UserSettingsRepositoryImplTest {
 
@@ -30,7 +31,7 @@ class UserSettingsRepositoryImplTest {
     private lateinit var originalLocale: Locale
     private val testScope = TestScope(StandardTestDispatcher())
 
-    @BeforeTest
+    @Before
     fun setUp() {
         originalLocale = Locale.getDefault()
         Locale.setDefault(Locale.US)
@@ -44,7 +45,7 @@ class UserSettingsRepositoryImplTest {
         repository = UserSettingsRepositoryImpl(dataStore)
     }
 
-    @AfterTest
+    @After
     fun tearDown() {
         testScope.cancel()
         if (tmpDir.exists()) {
